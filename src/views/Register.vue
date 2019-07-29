@@ -113,10 +113,9 @@ export default {
             this.user.email
           )
           .then(() => {
-            authService.login(this.user.email, this.user.password)
-          .then(() => {
-            this.$router.push('/')
-          })
+            authService.login(this.user.email, this.user.password).then(() => {
+              this.$router.push("/");
+            });
           });
       } else {
         alert("Your passwords doesn`t match, try again, please");
