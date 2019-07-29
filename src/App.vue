@@ -1,21 +1,39 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <nav class="navbar navbar-inverse">
+      <router-link to="/">Gradebooks</router-link>
+      <div class="navbar-right navbar-btn">
+        <router-link class="btn btn-danger navbar-btn" to="register">Register</router-link>
+        <router-link class="btn btn-danger navbar-btn" to="/login" v-if="!test">Login</router-link>
+        <a href="#" @click="logout" v-if="test">Logout</a>
+      </div>
+    </nav>
+    <router-view/>
   </div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import { authService } from '@/services/Auth'
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
+  data() {
+      return {
+        isAuthenticated: authService.isAuthenticated()
+      }
+    },
+    methods: {
+      logout() {
+        authService.logout()
+        this.isAuthenticated = false
+      }
+    },
+    computed: {
+      test() {
+        console.log(this.isAuthenticated)
+        return this.isAuthenticated
+      }
+    }
+    
 }
 </script>
-
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -23,6 +41,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  
+}
+.nav {
+  justify-content: space-between;
+  
+  background-color: lightgray;
 }
 </style>
