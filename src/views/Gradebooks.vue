@@ -18,7 +18,7 @@
         <tbody v-for="diary in paginated('diaries')" :key="diary.id">
             <tr>
                 <td>{{diary.title}}</td>
-                <td>{{diary.professor.firstName}} {{diary.professor.lastName}}</td>
+                <td>{{diary.professor.user.firstName}} {{diary.professor.user.lastName}}</td>
                 <td>{{humanFormat(diary.created_at)}}</td>
             </tr>
         </tbody>
@@ -61,8 +61,7 @@ export default {
       .then((response) => {
           next((vm) => {
             vm.diaries = response.data
-            console.log(response.data)
-          })
+        })
       })
   }, 
 };
