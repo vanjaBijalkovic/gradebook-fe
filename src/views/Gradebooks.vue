@@ -1,8 +1,10 @@
 <template>
   <div>
     <h3>All Gradebooks Page</h3>
-    <label for="term">Galerie filter</label>
-    <input type="text" v-model="term" autofocus />
+    <div class="filter">
+      <label for="term">Galerie filter</label>
+      <input type="text" v-model="term" autofocus /> 
+    </div>
     <p v-if="filteredArray.length == 0">There is no more gradebooks in base, try again</p>
     <paginate name="diaries" :list="filteredArray" :per="10">
       <table class="table table-striped table-bordered" style="width:100%">
@@ -59,6 +61,7 @@ export default {
       .then((response) => {
           next((vm) => {
             vm.diaries = response.data
+            console.log(response.data)
           })
       })
   }, 
@@ -69,6 +72,9 @@ h3 {
   font-weight: bold;
   padding: 2rem;
   font-family: serif;
+}
+.filter {
+  padding: 2rem;
 }
 
 </style>
