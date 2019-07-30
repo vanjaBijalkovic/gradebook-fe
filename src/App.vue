@@ -1,37 +1,17 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-inverse">
-      <router-link to="/">Gradebooks</router-link>
-      <div class="navbar-right navbar-btn">
-        <router-link class="btn btn-danger navbar-btn" to="register">Register</router-link>
-        <router-link class="btn btn-danger navbar-btn" to="/login" v-if="!test">Login</router-link>
-        <a href="#" @click="logout" v-if="test">Logout</a>
-      </div>
-    </nav>
+    <NavBar />
     <router-view/>
   </div>
 </template>
 <script>
-import { authService } from '@/services/Auth'
+import NavBar from './components/NavBar.vue'
+
 export default {
-  data() {
-      return {
-        isAuthenticated: authService.isAuthenticated()
-      }
-    },
-    methods: {
-      logout() {
-        authService.logout()
-        this.isAuthenticated = false
-      }
-    },
-    computed: {
-      test() {
-        console.log(this.isAuthenticated)
-        return this.isAuthenticated
-      }
-    }
-    
+  name: 'home',
+  components: {
+    NavBar
+  }
 }
 </script>
 <style>
