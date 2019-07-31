@@ -7,6 +7,14 @@ export default class ProfessorsService {
     getAll() {
         return axios.get('professors')
     }
+
+    get(id) {
+        return axios.get('professor/' + id);
+    }
+
+    professorAdd( professor ) {
+        return axios.post('professor', professor);
+    }
 }
 
 export const professorsService = new ProfessorsService();

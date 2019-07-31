@@ -61,6 +61,7 @@ export default {
       .then((response) => {
           next((vm) => {
             vm.diaries = response.data
+            console.log(response.data)
         })
       })
   }, 

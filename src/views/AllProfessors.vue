@@ -10,13 +10,15 @@
                 <th>FirstName</th>
                 <th>LastName</th>
                 <th>Picture</th>
+                <th>Gradebook</th>
             </tr>
         </thead>
-        <tbody v-for="professor in filteredArray" :key="professor.id">
+        <tbody v-for="professorArray in filteredArray" :key="professorArray.id">
             <tr>
-                <td>{{professor.user.firstName}}</td>
-                <td>{{professor.user.lastName}}</td>
-                <td><img :src="professor.url" alt="" width="64" height="64"></td>
+                <td>{{professorArray.user.firstName}}</td>
+                <td>{{professorArray.user.lastName}}</td>
+                <td><img :src="professorArray.url" alt="" width="64" height="64"></td>
+                <td>{{professorArray.diary}}</td>
             </tr>
         </tbody>
       </table>
@@ -29,23 +31,25 @@ import { professorsService } from '@/services/ProfessorsService'
 export default {
     data() {
         return {
-            professors:[],
+            professorsArrays:[],
             term:''
         }
     },
     computed: {
     filteredArray() {
-        return this.professors.filter(professor => {
+        return this.professorsArrays.filter(professor => {
             return professor.user.firstName.toLowerCase().includes(this.term.toLowerCase())
         })
-    }    
+    }
+    },    
 
-  }, 
+   
     beforeRouteEnter (to, from, next) {
     professorsService.getAll()
       .then((response) => {
           next((vm) => {
-            vm.professors = response.data
+            vm.professorsArrays = response.data
+            console.log(response.data)
           })
       })
   }, 
