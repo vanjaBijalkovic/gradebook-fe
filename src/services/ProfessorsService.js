@@ -8,12 +8,11 @@ export default class ProfessorsService {
         return axios.get('professors')
     }
 
-    get(id) {
-        return axios.get('professor/' + id);
-    }
-
+    get (id) {
+        return axios.get(`professors/${id}`)
+      }
     professorAdd( professor ) {
-        return axios.post('professor', professor);
+        return axios.post('professors', professor);
     }
 }
 

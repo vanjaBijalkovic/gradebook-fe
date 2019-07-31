@@ -58,12 +58,12 @@ export default new Router({
       component: MyGradeBook
     },
     {
-      path: '/single-gradebook',
+      path: '/single-gradebook/:id',
       name: 'single-gradebook',
       component: SingleGradebook
     },
     {
-      path: '/single-professor',
+      path: '/single-professor/:id',
       name: 'single-professor',
       component: SingleProfessor
     },

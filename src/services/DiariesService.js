@@ -7,6 +7,17 @@ export default class DiariesService {
     getAll() {
         return axios.get('diaries')
     }
+    get(id) {
+        return axios.get(`diaries/${id}`)
+      }
+
+    diaryAdd( diary ) {
+        return axios.post('diaries', diary);
+    }
+    diaryCommentAdd(id, comment) {
+        return axios.post(`diaries/${id}/comments`, comment);
+    }
+    
 }
 
 export const diariesService = new DiariesService();
