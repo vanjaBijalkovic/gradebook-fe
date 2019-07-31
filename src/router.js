@@ -53,7 +53,7 @@ export default new Router({
       component: CreateNewProfessor
     },
     {
-      path: '/my-gradebook',
+      path: '/my-gradebook/:id',
       name: 'my-gradebook',
       component: MyGradeBook
     },

@@ -11,7 +11,7 @@ export default class ProfessorsService {
     get (id) {
         return axios.get(`professors/${id}`)
       }
-    professorAdd( professor ) {
+    add( professor ) {
         return axios.post('professors', professor);
     }
 }

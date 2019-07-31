@@ -11,8 +11,7 @@
       </router-link>
       <div class="dropdown-menu">
         <router-link class="dropdown-item" to="/">Gradebooks</router-link>
-        <router-link class="dropdown-item" to="/my-gradebook">My Gradebook</router-link>
-        <router-link class="dropdown-item" to="/single-gradebook">Single Gradebook</router-link>
+        <router-link class="dropdown-item" :to="{ name: 'my-gradebook', params: { id: 4 }}">My Gradebook</router-link>
         <router-link class="dropdown-item" to="/create-gradebook">Create Gradebook</router-link>
       </div>
     </li>
@@ -50,7 +49,8 @@ import { authService } from '@/services/Auth'
 export default {
   data() {
       return {
-        isAuthenticated: authService.isAuthenticated()
+        isAuthenticated: authService.isAuthenticated(),
+        user: []
       }
     },
     methods: {
@@ -64,7 +64,16 @@ export default {
         console.log(this.isAuthenticated)
         return this.isAuthenticated
       }
-    }
+    },
+    beforeRouteEnter (to, from, next) {
+    diariesService.getAll()
+      .then((response) => {
+          next((vm) => {
+            vm.diaries = response.data
+            console.log(response.data)
+        })
+      })
+  },
     
 }
 </script>
