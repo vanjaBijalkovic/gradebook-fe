@@ -22,7 +22,7 @@
             </ol>
           </div>
           <td>
-            <button>Add more students</button>
+            <router-link :to="{ name: 'add-student', params: { id: diary.id }}">Add Student</router-link>
           </td>
         </tr>
       </tbody>

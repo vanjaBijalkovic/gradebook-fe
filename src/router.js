@@ -33,7 +33,7 @@ export default new Router({
       component: Register
     },
     {
-      path: '/add-student',
+      path: '/add-student/:id',
       name: 'add-student',
       component: AddNewStudent
     },

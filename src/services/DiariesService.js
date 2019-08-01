@@ -17,7 +17,9 @@ export default class DiariesService {
     diaryCommentAdd(id, comment) {
         return axios.post(`diaries/${id}/comments`, comment);
     }
-    
+    diaryStudentAdd(id, student) {
+        return axios.post(`diaries/${id}/students`, student);
+      }
 }
 
 export const diariesService = new DiariesService();
