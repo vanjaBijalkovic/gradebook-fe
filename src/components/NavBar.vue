@@ -38,11 +38,12 @@
 
 <script>
 import { authService } from '@/services/Auth'
+import { professorsSerivce } from '@/services/ProfessorsService'
 export default {
   data() {
       return {
         isAuthenticated: authService.isAuthenticated(),
-        user: []
+        professor:[]
       }
     },
     methods: {
@@ -57,17 +58,16 @@ export default {
         return this.isAuthenticated
       }
     },
-    beforeRouteEnter (to, from, next) {
-    diariesService.getAll()
-      .then((response) => {
-          next((vm) => {
-            vm.diaries = response.data
-            console.log(response.data)
-        })
-      })
-  },
+    beforeRouteEnter(to, from, next) {
+    next(vm => {
+      professorService.get(vm.$route.params.id).then(response => {
+        vm.professor = response.data;
+      }).catch(error => {console.log(error)});
+    })
+  }
+  }
     
-}
+
 </script>
 <style>
 .top {

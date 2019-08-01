@@ -92,7 +92,6 @@ export default {
       .get(this.$route.params.id)
       .then(response => {
         this.diary = response.data;
-        console.log(this.diary);
       })
       .catch(error => {
         console.log(error);

@@ -18,7 +18,7 @@
         <tbody v-for="diary in paginated('diaries')" :key="diary.id">
             <tr>
                 <router-link :to="{ name: 'single-gradebook', params: { id: diary.id }}">{{diary.title}}</router-link>
-                <td>{{diary.professor.user.firstName}} {{diary.professor.user.lastName}}</td>
+                <td><router-link :to="{ name: 'single-professor', params: { id: diary.professor.id }}">{{diary.professor.user.firstName}} {{diary.professor.user.lastName}}</router-link></td>
                 <td>{{humanFormat(diary.created_at)}}</td>
             </tr>
         </tbody>
