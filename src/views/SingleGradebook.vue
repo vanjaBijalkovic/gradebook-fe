@@ -3,6 +3,7 @@
     <table class="table table-striped table-bordered" style="width:100%">
       <thead>
         <tr>
+          <th></th>
           <th>Gradebook</th>
           <th>Professor</th>
           <th>Students</th>
@@ -10,6 +11,9 @@
       </thead>
       <tbody>
         <tr>
+          <td width="200">
+            <router-link class="btn btn-primary" :to="{ name: 'add-student', params: { id: diary.id }}">Add Student</router-link>
+          </td>
           <td>{{diary.title}}</td>
           <td>{{diary.professor.user.firstName}} {{diary.professor.user.lastName}}</td>
           <div class="container">
@@ -21,9 +25,6 @@
               >{{student.firstName }} {{student.lastName}}</li>
             </ol>
           </div>
-          <td>
-            <router-link :to="{ name: 'add-student', params: { id: diary.id }}">Add Student</router-link>
-          </td>
         </tr>
       </tbody>
     </table>

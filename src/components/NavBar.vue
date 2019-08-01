@@ -25,18 +25,10 @@
         <router-link class="dropdown-item" to="/create-professor">Create Professor</router-link>
       </div>
     </li>
-    <li class="nav-item dropdown">
-      <router-link class="nav-link dropdown-toggle" to="#" id="navbardrop" data-toggle="dropdown">
-        Students
-      </router-link>
-      <div class="dropdown-menu">
-        <router-link class="dropdown-item" to="/add-student">Add New Student</router-link>
-      </div>
-    </li>
-  </ul>
+    </ul>
   <ul class="navbar-nav">>
-      <router-link class="nav-item nav-link" to="/login" v-if="!isAuthenticated">Login</router-link>
-      <a href="#" class="nav-item nav-link" @click="logout" v-if="isAuthenticated">Logout</a>    |
+      <router-link class="nav-item nav-link" to="/login" v-if="!isAuthenticated">Sign in</router-link>
+      <a href="#" class="nav-item nav-link" @click="logout" v-if="isAuthenticated">Sign out</a>    |
       <li class="nav-item">
         <router-link class="nav-link" to="/">Register</router-link>
     </li>

@@ -19,7 +19,7 @@ export default class DiariesService {
     }
     diaryStudentAdd(id, student) {
         return axios.post(`diaries/${id}/students`, student);
-      }
+    }
 }
 
 export const diariesService = new DiariesService();
