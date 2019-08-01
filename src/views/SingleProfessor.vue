@@ -11,10 +11,15 @@
             </tr>
         </thead>
         <tbody>
-            <td><img :src="professor.url" alt="" width="64" height="64"></td>
-            <td>{{ professor.user.firstName }} {{ professor.user.lastName }}</td>
-            <td><router-link :to="{ name: 'single-gradebook', params: { id: professor.diary.id }}">{{professor.diary.title}}</router-link></td>
-            <td>{{ professor.diary.students.length }} </td>
+            <td v-for="image in professor.professor_has_many_images" :key="image.id">
+              <img :src="image.url" alt="" width="64" height="64">
+            </td>
+            <template v-if="professor && professor.user">
+              <td>{{ professor.user.firstName }} {{ professor.user.lastName }}</td>
+            </template>
+
+            <td v-if="professor && professor.diary"><router-link :to="{ name: 'single-gradebook', params: { id: professor.diary.id }}">{{professor.diary.title}}</router-link></td>
+            <td v-if="professor && professor.diary">{{ professor.diary.students.length }} </td>
         </tbody>
         </table>
     </div>

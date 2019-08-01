@@ -17,7 +17,8 @@
             <tr>
                 <td>{{professorArray.user.firstName}}</td>
                 <td>{{professorArray.user.lastName}}</td>
-                <td><img :src="professorArray.url" alt="" width="64" height="64"></td>
+                <td v-for="image in professorArray.professor_has_many_images.slice(0,1)" :key="image.id">
+                    <img :src="image.url" alt="" width="64" height="64"></td>
                 <td>{{professorArray.diary}}</td>
             </tr>
         </tbody>

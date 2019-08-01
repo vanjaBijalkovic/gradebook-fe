@@ -23,6 +23,7 @@
                 v-for="student in diary.students"
                 :key="student.id"
               >{{student.firstName }} {{student.lastName}}</li>
+              
             </ol>
           </div>
         </tr>

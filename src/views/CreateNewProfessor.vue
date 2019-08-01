@@ -6,7 +6,7 @@
         <input
           type="text"
           id="firstName"
-          v-model="user.firstName"
+          v-model="newProfessor.firstName"
           required
           minlength="2"
           maxlength="255"
@@ -14,7 +14,7 @@
       </div>
       <div>
         <label for="lastName">Last Name</label>
-        <input type="text" id="lastName" v-model="user.lastName" required />
+        <input type="text" id="lastName" v-model="newProfessor.lastName" required />
       </div>
       <div>
         <button class="btn btn-sml" @click.prevent="addNewImageInput">Add more images</button>
@@ -46,12 +46,11 @@ export default {
   data() {
     return {
       newProfessor: {
-        url: []
+        url: [],
+        firstName: '',
+        lastName:'',
       },
-      user: {
-          firstName: '',
-          lastName:''
-      }
+      
     };
   },
   methods: {
