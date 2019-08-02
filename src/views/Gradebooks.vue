@@ -71,11 +71,6 @@ export default {
 };
 </script>
 <style>
-h3 {
-  font-weight: bold;
-  padding: 2rem;
-  font-family: serif;
-}
 .filter {
   padding: 2rem;
 }

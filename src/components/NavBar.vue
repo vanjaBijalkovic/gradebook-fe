@@ -12,9 +12,9 @@
       <div class="dropdown-menu">
         <router-link class="dropdown-item" to="/">Gradebooks</router-link>
         <template >
-        <router-link class="dropdown-item" :to="{ name: 'my-gradebook', params: { id: 4 }}">My Gradebook</router-link>
+        <router-link class="dropdown-item" v-if="isAuthenticated" :to="{ name: 'my-gradebook', params: { id: 10 }}">My Gradebook</router-link>
         </template>
-        <router-link class="dropdown-item" to="/create-gradebook">Create Gradebook</router-link>
+        <router-link class="dropdown-item" v-if="isAuthenticated" to="/create-gradebook">Create Gradebook</router-link>
       </div>
     </li>
     <li class="nav-item dropdown">
@@ -23,7 +23,7 @@
       </router-link>
       <div class="dropdown-menu">
         <router-link class="dropdown-item" to="/all-professors">All Professors</router-link>
-        <router-link class="dropdown-item" to="/create-professor">Create Professor</router-link>
+        <router-link class="dropdown-item" v-if="isAuthenticated" to="/create-professor">Create Professor</router-link>
       </div>
     </li>
     </ul>
@@ -71,7 +71,7 @@ export default {
     },
     beforeRouteEnter(to, from, next) {
     next(vm => {
-      professorService.all(vm.$route.params.id).then(response => {
+      professorService.all().then(response => {
         vm.professor = response.data;
       }).catch(error => {console.log(error)});
     })

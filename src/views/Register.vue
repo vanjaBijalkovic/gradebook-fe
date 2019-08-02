@@ -1,6 +1,7 @@
 <template>
   <div class="container mt-4">
     <form @submit.prevent="addUser">
+      <h2>Register</h2>
       <div class="form-group row">
         <label for="name" class="col-4 col-form-label">First Name</label>
         <div class="col-8">

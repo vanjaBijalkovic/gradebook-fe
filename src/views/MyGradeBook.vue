@@ -1,11 +1,13 @@
 <template>
   <div>
+    <h3>Single Gradebook Page</h3>
     <table class="table table-striped table-bordered" style="width:100%">
       <thead>
         <tr>
           <th>
             <router-link
               class="btn btn-secondary"
+              v-if="isAuthenticated"
               :to="{ name: 'add-student', params: { id: diary.id }}"
             >Add Student</router-link>
           </th>
@@ -17,7 +19,20 @@
       <tbody>
         <tr v-if="diary && diary.professor">
           <td width="200">
-            <router-link class="btn btn-secondary" :to="editRoute()">Edit Gradebook</router-link>
+            <div class="route">
+              <button
+                v-if="isAuthenticated"
+                class="btn btn-danger"
+                @click="deleteDiary()"
+              >Delete Gradebook</button>
+            </div>
+            <div class="route">
+              <router-link
+                v-if="isAuthenticated"
+                class="btn btn-secondary"
+                :to="editRoute()"
+              >Edit Gradebook</router-link>
+            </div>
           </td>
           <td>{{diary.title}}</td>
           <td>{{diary.professor.user.firstName}} {{diary.professor.user.lastName}}</td>
@@ -42,7 +57,11 @@
           {{comment.user.firstName}} {{comment.user.lastName}}
         </p>
         <div>
-          <button class="btn btn-secondary" @click="handleDelete(comment.id)">Delete</button>
+          <button
+            class="btn btn-secondary"
+            v-if="isAuthenticated"
+            @click="handleDelete(comment.id)"
+          >Delete</button>
         </div>
       </div>
     </div>
@@ -58,6 +77,7 @@
 <script>
 import { diariesService } from "@/services/DiariesService";
 import { commentsService } from "@/services/CommentsService";
+import { authService } from "@/services/Auth";
 
 export default {
   data() {
@@ -65,7 +85,9 @@ export default {
       diary: [],
       newComment: {
         text: ""
-      }
+      },
+      isAuthenticated: authService.isAuthenticated(),
+      loggedUser: ""
     };
   },
 
@@ -87,17 +109,28 @@ export default {
         });
     },
     handleDelete(id) {
-      commentsService.commentDelete(id).then(response => {
-        this.diary.comments = this.diary.comments.filter(
-          comment => comment.id !== id
-        );
-      });
+      if (confirm("Are you sure?")) {
+        commentsService.commentDelete(id).then(response => {
+          this.diary.comments = this.diary.comments.filter(
+            comment => comment.id !== id
+          );
+        });
+      }
     },
+    deleteDiary() {
+      if (confirm("Are you sure?")) {
+        diariesService.delete(this.diary.id).then(() => {
+          this.$router.push("/");
+        });
+      }
+    },
+
     editRoute() {
       return `/single-gradebook/${this.diary.id}/edit`;
     }
   },
   created() {
+    this.$eventHub.$on("logged-in", this.getCurrentUser);
     diariesService
       .get(this.$route.params.id)
       .then(response => {
@@ -106,6 +139,9 @@ export default {
       .catch(error => {
         console.log(error);
       });
+  },
+  beforeDestroy() {
+    this.$eventHub.$off("logged-in");
   }
 };
 </script>

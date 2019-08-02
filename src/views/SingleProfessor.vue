@@ -34,7 +34,7 @@ import { professorsService } from "../services/ProfessorsService";
 export default {
   data() {
     return {
-      professor: {}
+      professor: {},
     };
   },
   beforeRouteEnter(to, from, next) {

@@ -16,10 +16,3 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
-router.beforeEach((to, from, next)=> {
-
-  if(to.name !== 'add-student' && !authService.isAuthenticated()) {
-      return router.push( {name:'login'}); // reroute na login ako nije ulogovan
-  }
-  next()
-})
