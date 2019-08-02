@@ -2,7 +2,7 @@
   <div>
     <h3>All Professors Page</h3>
     <div class="filter">
-      <label for="term">Professors filter</label>
+      <label class="input" for="term">Professors filter</label>
       <input type="text" v-model="term" autofocus />
     </div>
     <table class="table table-striped table-bordered" style="width:100%">

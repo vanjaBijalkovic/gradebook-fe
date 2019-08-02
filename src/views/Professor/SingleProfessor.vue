@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { professorsService } from "../services/ProfessorsService";
+import { professorsService } from "@/services/ProfessorsService";
 export default {
   data() {
     return {

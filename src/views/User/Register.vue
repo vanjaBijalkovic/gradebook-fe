@@ -120,6 +120,7 @@ export default {
           )
           .then(() => {
             authService.login(this.user.email, this.user.password).then(() => {
+              this.$eventHub.$emit("logged-in");
               this.$router.push("/");
             });
           });

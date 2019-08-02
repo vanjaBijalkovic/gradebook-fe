@@ -16,7 +16,7 @@ export default {
   },
   data() {
     return {
-      user:window.localStorage.getItem('loginToken')
+      user:window.localStorage.getItem('user')
     }
   }
 }

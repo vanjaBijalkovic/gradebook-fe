@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Single Gradebook Page</h3>
+    <h3>My Gradebook Page</h3>
     <table class="table table-striped table-bordered" style="width:100%">
       <thead>
         <tr>

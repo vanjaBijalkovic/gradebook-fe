@@ -12,7 +12,7 @@
       <div class="dropdown-menu">
         <router-link class="dropdown-item" to="/">Gradebooks</router-link>
         <template >
-        <router-link class="dropdown-item" v-if="isAuthenticated" :to="{ name: 'my-gradebook', params: { id: 10 }}">My Gradebook</router-link>
+        <router-link class="dropdown-item" v-if="isAuthenticated" :to="{ name: 'my-gradebook', params: { id: user.id }}">My Gradebook</router-link>
         </template>
         <router-link class="dropdown-item" v-if="isAuthenticated" to="/create-gradebook">Create Gradebook</router-link>
       </div>
@@ -41,11 +41,13 @@
 import { authService } from '@/services/Auth'
 import { professorsSerivce } from '@/services/ProfessorsService'
 export default {
+  
   data() {
       return {
         isAuthenticated: authService.isAuthenticated(),
         professor:{},
-        loggedUser:''
+        loggedUser:'',
+        user:JSON.parse(window.localStorage.getItem('user'))
       }
     },
     methods: {
@@ -65,17 +67,12 @@ export default {
     },
     created(){
       this.$eventHub.$on('logged-in', this.getCurrentUser);
+      console.log(this.user)
     },
     beforeDestroy() {
       this.$eventHub.$off('logged-in');
     },
-    beforeRouteEnter(to, from, next) {
-    next(vm => {
-      professorService.all().then(response => {
-        vm.professor = response.data;
-      }).catch(error => {console.log(error)});
-    })
-  }
+    
   }
     
 

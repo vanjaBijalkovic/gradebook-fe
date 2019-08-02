@@ -9,7 +9,7 @@ export default class DiariesService {
     }
     get(id) {
         return axios.get(`diaries/${id}`)
-      }
+    }
 
     diaryAdd( diary ) {
         return axios.post('diaries', diary);
