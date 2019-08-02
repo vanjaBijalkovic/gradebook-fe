@@ -3,7 +3,12 @@
     <table class="table table-striped table-bordered" style="width:100%">
       <thead>
         <tr>
-          <th><router-link class="btn btn-secondary" :to="{ name: 'add-student', params: { id: diary.id }}">Add Student</router-link></th>
+          <th>
+            <router-link
+              class="btn btn-secondary"
+              :to="{ name: 'add-student', params: { id: diary.id }}"
+            >Add Student</router-link>
+          </th>
           <th>Gradebook</th>
           <th>Professor</th>
           <th>Students</th>
@@ -23,7 +28,6 @@
                 v-for="student in diary.students"
                 :key="student.id"
               >{{student.firstName }} {{student.lastName}}</li>
-              
             </ol>
           </div>
         </tr>
@@ -59,16 +63,17 @@ export default {
   data() {
     return {
       diary: [],
-      newComment:{
-          text:''
+      newComment: {
+        text: ""
       }
-    }
+    };
   },
 
   methods: {
-      submitComment() {
+    submitComment() {
       this.newComment.user_id = this.diary.professor.user.id;
-      diariesService.diaryCommentAdd(this.diary.id, this.newComment)
+      diariesService
+        .diaryCommentAdd(this.diary.id, this.newComment)
         .then(() => {
           this.newComment = {};
           diariesService
@@ -82,14 +87,15 @@ export default {
         });
     },
     handleDelete(id) {
-            commentsService.commentDelete(id)
-            .then(response => {
-               this.diary.comments = this.diary.comments.filter(comment => comment.id !== id)
-           })
-  },
-  editRoute() {
-     return `/single-gradebook/${this.diary.id}/edit`
-  }
+      commentsService.commentDelete(id).then(response => {
+        this.diary.comments = this.diary.comments.filter(
+          comment => comment.id !== id
+        );
+      });
+    },
+    editRoute() {
+      return `/single-gradebook/${this.diary.id}/edit`;
+    }
   },
   created() {
     diariesService
@@ -99,11 +105,9 @@ export default {
       })
       .catch(error => {
         console.log(error);
-      })
+      });
   }
-  
-}
+};
 </script>
 <style>
-
 </style>

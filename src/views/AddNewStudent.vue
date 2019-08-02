@@ -38,9 +38,9 @@
               v-validate="{ required: true,  url , regex: /(?:(?:(?:\.jpg))|(?:(?:\.jpeg))|(?:(?:\.png)))/ }"
               required
             />
-            <button  class="btn btn-sml" @click.prevent="removeImage(index)" >Remove image</button>
-            <button  class="btn btn-sml" @click.prevent="moveUp(index)" >Move image up</button>
-            <button  class="btn btn-sml" @click.prevent="moveDown(index)" >Move image down</button>
+            <button class="btn btn-sml" @click.prevent="removeImage(index)">Remove image</button>
+            <button class="btn btn-sml" @click.prevent="moveUp(index)">Move image up</button>
+            <button class="btn btn-sml" @click.prevent="moveDown(index)">Move image down</button>
           </div>
         </div>
       </div>
@@ -51,63 +51,63 @@
 </template>
 
 <script>
-import { diariesService } from '@/services/DiariesService'
-import { authService } from '@/services/Auth'
+import { diariesService } from "@/services/DiariesService";
+import { authService } from "@/services/Auth";
 
 export default {
   data() {
     return {
-      diary:{},
+      diary: {},
       newStudent: {
-        firstName: '',
-        lastName:'',
+        firstName: "",
+        lastName: "",
         url: []
       },
-      isAuthenticated: authService.isAuthenticated(),
-    }
+      isAuthenticated: authService.isAuthenticated()
+    };
   },
   methods: {
     handleStudent() {
-      this.newStudent.url = this.newStudent.url.map((obj) => {
-        return obj.url
-      })
+      this.newStudent.url = this.newStudent.url.map(obj => {
+        return obj.url;
+      });
       diariesService
         .diaryStudentAdd(this.diary.id, this.newStudent)
-        .then( response => {
+        .then(response => {
           this.newStudent = {};
-          this.$router.push("/");
-        }).catch( error => {
+          this.$router.push(`/single-gradebook/${this.$route.params.id}`);
+        })
+        .catch(error => {
           console.log(error);
         });
     },
     addNewImageInput() {
       this.newStudent.url.push({ id: this.id++, url: "" });
     },
-    moveUp(index){
-				if (index !=0) {	
-					this.newStudent.url.splice(index-1, 0, this.newStudent.url[index])
-					this.newStudent.url.splice(index+1,1)		
-				}
-			},
-			moveDown(index){
-				if(index != this.newStudent.url.length-1){
-					this.newStudent.url.splice(index+2, 0, this.newStudent.url[index])
-					this.newStudent.url.splice(index,1)
-				}
-			},
-			cancel(){
-				this.$router.push({ name: 'my-galleries' })
-      },
-      removeImage(index){
-				if (Object.keys(this.newStudent.url).length > 1){
-					this.newStudent.url.splice(index, 1)
-				}else{
-					this.notifyOneImage = true
-				}
-				
-			},
+    moveUp(index) {
+      if (index != 0) {
+        this.newStudent.url.splice(index - 1, 0, this.newStudent.url[index]);
+        this.newStudent.url.splice(index + 1, 1);
+      }
+    },
+    moveDown(index) {
+      if (index != this.newStudent.url.length - 1) {
+        this.newStudent.url.splice(index + 2, 0, this.newStudent.url[index]);
+        this.newStudent.url.splice(index, 1);
+      }
+    },
+    cancel() {
+      this.$router.push({ name: "my-galleries" });
+    },
+    removeImage(index) {
+      if (Object.keys(this.newStudent.url).length > 1) {
+        this.newStudent.url.splice(index, 1);
+      } else {
+        this.notifyOneImage = true;
+      }
+    }
   },
-  
+
   created() {
     diariesService
       .get(this.$route.params.id)
@@ -117,10 +117,9 @@ export default {
       })
       .catch(error => {
         console.log(error);
-      })
+      });
   }
-  
-}
+};
 </script>
 
 <style>

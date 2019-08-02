@@ -2,7 +2,7 @@
   <div>
     <h3>All Gradebooks Page</h3>
     <div class="filter">
-      <label for="term">Galerie filter</label>
+      <label for="term">Gradebook Filter</label>
       <input type="text" v-model="term" autofocus />
     </div>
     <p v-if="filteredArray.length == 0">There is no more gradebooks in base, try again</p>

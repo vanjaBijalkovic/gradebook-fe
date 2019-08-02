@@ -23,6 +23,9 @@ export default class DiariesService {
     diaryEdit(id, newDiary) {
         return axios.put(`diaries/${id}`, newDiary);
     }
+    delete(id) {
+        return axios.delete(`diaries/${id}`)
+    }
 }
 
 export const diariesService = new DiariesService();
