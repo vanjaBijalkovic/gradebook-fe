@@ -35,7 +35,7 @@
               placeholder="Image URL"
               class="form-control"
               :name="'image_' + newStudent.url[index].id"
-              v-validate="{ required: true,  url }"
+              v-validate="{ required: true,  url , regex: /(?:(?:(?:\.jpg))|(?:(?:\.jpeg))|(?:(?:\.png)))/ }"
               required
             />
             <button  class="btn btn-sml" @click.prevent="removeImage(index)" >Remove image</button>
@@ -52,6 +52,8 @@
 
 <script>
 import { diariesService } from '@/services/DiariesService'
+import { authService } from '@/services/Auth'
+
 export default {
   data() {
     return {
@@ -60,7 +62,8 @@ export default {
         firstName: '',
         lastName:'',
         url: []
-      }
+      },
+      isAuthenticated: authService.isAuthenticated(),
     }
   },
   methods: {
@@ -72,6 +75,7 @@ export default {
         .diaryStudentAdd(this.diary.id, this.newStudent)
         .then( response => {
           this.newStudent = {};
+          this.$router.push("/");
         }).catch( error => {
           console.log(error);
         });

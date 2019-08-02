@@ -67,5 +67,10 @@ export default new Router({
       name: 'single-professor',
       component: SingleProfessor
     },
+    {
+      path: '/single-gradebook/:id/edit',
+      name: 'edit-gradebook',
+      component: CreateNewGradebook
+    },
   ]
 })

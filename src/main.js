@@ -10,6 +10,7 @@ Vue.config.productionTip = false
 Vue.use(VuePaginate)
 Vue.use(VeeValidate)
 
+Vue.prototype.$eventHub = new Vue()
 new Vue({
   router,
   render: h => h(App)
@@ -17,7 +18,7 @@ new Vue({
 
 router.beforeEach((to, from, next)=> {
 
-  if(to.name !== 'login' && !authService.isAuthenticated() && to.name !== 'register') {
+  if(to.name !== 'add-student' && !authService.isAuthenticated()) {
       return router.push( {name:'login'}); // reroute na login ako nije ulogovan
   }
   next()

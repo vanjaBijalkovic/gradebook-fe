@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h3>Create Gradebook Page</h3>
     <div class="container">
       <div class="form-group row">
         <label for="title" class="form-control col-sm-2">Gradebook title</label>
@@ -9,6 +10,9 @@
           id="title"
           name="title"
           v-model="newDiary.title"
+          minlength="2"
+          maxlength="255"
+          required
         />
       </div>
 
@@ -43,30 +47,49 @@ export default {
   data() {
     return {
       newDiary: {},
-      professors: {}
+      professors: {},
+      id: ""
     };
   },
   methods: {
     handleDiary() {
-      diariesService.diaryAdd(this.newDiary)
+      if (this.$route.params.id) {
+        diariesService.diaryEdit(this.newDiary.id, this.newDiary)
+        .then(() => {
+          this.$router.push("/");
+        });
+      }
+        diariesService
+          .diaryAdd(this.newDiary)
+          .then(response => {
+            this.$router.push("/");
+          })
+          .catch(error => {
+            alert(error);
+          });
+      }
+    },
+    created() {
+      if (this.$route.params.id) {
+        diariesService
+          .get(this.$route.params.id)
+          .then(response => {
+            this.newDiary = response.data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+      professorsService
+        .getAll()
         .then(response => {
-          this.$router.push('/')
+          this.professors = response.data.filter(professor => !professor.diary);
         })
         .catch(error => {
-          alert(error);
+          console.log(error);
         });
     }
-  },
-  created() {
-    professorsService
-      .getAll()
-      .then(response => {
-        this.professors = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
+  
 };
 </script>
 

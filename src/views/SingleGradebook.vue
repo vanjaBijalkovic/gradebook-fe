@@ -1,18 +1,24 @@
 <template>
   <div>
+    <h3>Single Gradebook Page</h3>
     <table class="table table-striped table-bordered" style="width:100%">
       <thead>
         <tr>
-          <th></th>
+          <th><router-link class="btn btn-secondary" :to="{ name: 'add-student', params: { id: diary.id }}">Add Student</router-link></th>
           <th>Gradebook</th>
           <th>Professor</th>
           <th>Students</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-if="diary && diary.professor">
           <td width="200">
-            <router-link class="btn btn-primary" :to="{ name: 'add-student', params: { id: diary.id }}">Add Student</router-link>
+            <div>
+              
+            </div>
+            <div>
+              <router-link class="btn btn-secondary" :to="editRoute()">Edit Gradebook</router-link>
+            </div>
           </td>
           <td>{{diary.title}}</td>
           <td>{{diary.professor.user.firstName}} {{diary.professor.user.lastName}}</td>
@@ -38,7 +44,7 @@
           {{comment.user.firstName}} {{comment.user.lastName}}
         </p>
         <div>
-          <button @click="handleDelete(comment.id)">Delete</button>
+          <button class="btn btn-secondary" @click="handleDelete(comment.id)">Delete</button>
         </div>
       </div>
     </div>
@@ -86,6 +92,9 @@ export default {
             .then(response => {
                this.diary.comments = this.diary.comments.filter(comment => comment.id !== id)
            })
+  },
+  editRoute() {
+     return `/single-gradebook/${this.diary.id}/edit`
   }
   },
   created() {

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h3>All Professors Page</h3>
         <div class="filter">
             <label for="term">Professors filter</label>
         <input type="text" v-model="term" autofocus /> 
@@ -19,7 +20,10 @@
                 <td>{{professorArray.user.lastName}}</td>
                 <td v-for="image in professorArray.professor_has_many_images.slice(0,1)" :key="image.id">
                     <img :src="image.url" alt="" width="64" height="64"></td>
-                <td>{{professorArray.diary}}</td>
+                <template >
+                    <td v-if="professorArray.diary">{{professorArray.diary.title}}</td>
+                    <td v-else>Professor is available</td>
+                </template>
             </tr>
         </tbody>
       </table>

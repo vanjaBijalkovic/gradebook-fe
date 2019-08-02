@@ -22,6 +22,7 @@
       login() {
         authService.login(this.email, this.password)
           .then(() => {
+            this.$eventHub.$emit('logged-in');
             this.$router.push('/')
           })
       }

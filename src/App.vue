@@ -6,6 +6,7 @@
 </template>
 <script>
 import NavBar from './components/NavBar.vue'
+import css from '../public/project.css'
 
 export default {
   name: 'home',

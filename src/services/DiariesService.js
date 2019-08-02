@@ -20,6 +20,9 @@ export default class DiariesService {
     diaryStudentAdd(id, student) {
         return axios.post(`diaries/${id}/students`, student);
     }
+    diaryEdit(id, newDiary) {
+        return axios.put(`diaries/${id}`, newDiary);
+    }
 }
 
 export const diariesService = new DiariesService();

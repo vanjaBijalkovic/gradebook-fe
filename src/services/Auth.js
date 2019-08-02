@@ -37,6 +37,9 @@ export default class AuthService {
       firstName,lastName, email, password
     })
   }
+  get (id) {
+    return axios.get(`users/${id}`)
+  }
 }
 
 export const authService = new AuthService()

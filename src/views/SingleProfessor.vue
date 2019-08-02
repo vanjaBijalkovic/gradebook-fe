@@ -10,8 +10,8 @@
                 <th>Number of students</th>
             </tr>
         </thead>
-        <tbody>
-            <td v-for="image in professor.professor_has_many_images" :key="image.id">
+        <tbody v-if="professor && professor.professor_has_many_images">
+            <td v-for="image in professor.professor_has_many_images.slice(0,1)" :key="image.id">
               <img :src="image.url" alt="" width="64" height="64">
             </td>
             <template v-if="professor && professor.user">
@@ -37,7 +37,6 @@ export default {
     next(vm => {
       professorsService.get(vm.$route.params.id).then(response => {
         vm.professor = response.data;
-        console.log(vm.professor);
       }).catch(error => {console.log(error)});
     });
   },
