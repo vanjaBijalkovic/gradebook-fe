@@ -78,7 +78,6 @@
 import { diariesService } from "@/services/DiariesService";
 import { commentsService } from "@/services/CommentsService";
 import { authService } from "@/services/Auth";
-
 export default {
   data() {
     return {
@@ -90,7 +89,6 @@ export default {
       loggedUser: ""
     };
   },
-
   methods: {
     submitComment() {
       this.newComment.user_id = this.diary.professor.user.id;
@@ -124,7 +122,6 @@ export default {
         });
       }
     },
-
     editRoute() {
       return `/single-gradebook/${this.diary.id}/edit`;
     }

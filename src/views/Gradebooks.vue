@@ -51,7 +51,7 @@ export default {
     return {
       diaries: [],
       paginate: ["diaries"],
-      term: ""
+      term: "",
     };
   },
   computed: {

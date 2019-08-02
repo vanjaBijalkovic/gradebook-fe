@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>Create Professor</h3>
-    <form @submit.prevent="handleForm">
+    <form class="container" @submit.prevent="handleForm">
       <div>
         <label for="firstName">First Name</label>
         <input
@@ -37,6 +37,21 @@
             <button class="btn btn-sml" @click.prevent="moveDown(index)">Move image down</button>
           </div>
         </div>
+        <div class="form-group row diary">
+        <label for="diary" class="form-control col-sm-2">Diary</label>
+        <select
+          class="form-control col-sm-4"
+          name="diary"
+          id="diary"
+          v-model="newProfessor.diary_id"
+        >
+          <option
+            :value="diary.id"
+            v-for="diary in diaries"
+            :key="diary.id"
+          >{{ diary.title}}</option>
+        </select>
+        </div>
       </div>
       <button name="submit" type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -45,6 +60,7 @@
 
 <script>
 import { professorsService } from "@/services/ProfessorsService";
+import { diariesService } from "@/services/DiariesService";
 
 export default {
   data() {
@@ -52,8 +68,10 @@ export default {
       newProfessor: {
         url: [],
         firstName: "",
-        lastName: ""
-      }
+        lastName: "",
+        diary_id:""
+      },
+      diaries: {}
     };
   },
   methods: {
@@ -90,7 +108,18 @@ export default {
         this.notifyOneImage = true;
       }
     }
+  },
+  created() {
+    diariesService
+        .getAll()
+        .then(response => {
+          this.diaries = response.data.filter(diary => !diary.professor_id);
+        })
+        .catch(error => {
+          console.log(error);
+        });
   }
+  
 };
 </script>
 

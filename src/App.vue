@@ -7,11 +7,17 @@
 <script>
 import NavBar from './components/NavBar.vue'
 import css from '../public/project.css'
+import { authService } from '@/services/Auth'
 
 export default {
   name: 'home',
   components: {
     NavBar
+  },
+  data() {
+    return {
+      user:window.localStorage.getItem('loginToken')
+    }
   }
 }
 </script>
