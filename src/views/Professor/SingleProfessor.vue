@@ -23,7 +23,7 @@
             :to="{ name: 'single-gradebook', params: { id: professor.diary.id }}"
           >{{professor.diary.title}}</router-link>
         </td>
-        <td v-if="professor && professor.diary">{{ professor.diary.students.length }}</td>
+        <td v-if="professor && professor.diary && professor.diary.students">{{ professor.diary.students.length }}</td>
         <div v-if="errorsList.length > 0" class="alert alert-danger">
           <p v-for="(error, index) in errors" :key="index">
             Message: {{ error.message }}
@@ -46,7 +46,8 @@ import { professorsService } from "@/services/ProfessorsService";
 export default {
   data() {
     return {
-      professor: {}
+      professor: {},
+      errorsList: []
     };
   },
   beforeRouteEnter(to, from, next) {

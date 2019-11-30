@@ -46,17 +46,6 @@
             <button class="btn btn-sm" @click.prevent="moveDown(index)">Move image down</button>
           </div>
         </div>
-        <div class="form-group row diary mt-2">
-          <label for="diary" class="form-control col-sm-2 mr-3">Diary</label>
-          <select
-            class="form-control col-sm-4"
-            name="diary"
-            id="diary"
-            v-model="newProfessor.diary_id"
-          >
-            <option :value="diary.id" v-for="diary in diaries" :key="diary.id">{{ diary.title}}</option>
-          </select>
-        </div>
       </div>
       <div v-if="errorsArray.length > 0" class="alert alert-danger">
         <div v-for="(error, index) in errorsArray" :key="index">
@@ -147,8 +136,8 @@ export default {
     diariesService
       .getAll()
       .then(response => {
-        if (response.data) {
-          this.diaries = response.data.filter(diary => !diary.professor_id);
+        if (response.data && response.data.data) {
+          this.diaries = response.data.data.filter(diary => !diary.professor_id);
         }
       })
       .catch(error => {
