@@ -89,11 +89,25 @@
         </div>
       </div>
     </form>
+
+    <div v-if="errorsList.length > 0" class="alert alert-danger">
+      <p v-for="(error, index) in errors" :key="index">
+        Message: {{ error.message }}
+        <br />
+        <span v-for="(err, i) in errors[index].errors" :key="i">
+          <span v-for="(e, j) in err" :key="j">
+            Error: {{ err[j] }}
+            <br />
+          </span>
+        </span>
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
 import { authService } from "@/services/Auth";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -104,11 +118,21 @@ export default {
         passwordConfirmation: "",
         email: "",
         termsAndConditions: true
-      }
+      },
+      errorsList: []
     };
   },
 
+  computed: {
+    ...mapGetters({
+      errorsFromRest: "getError"
+    })
+  },
+
   methods: {
+    ...mapActions({
+      login: "login"
+    }),
     addUser() {
       if (this.user.password == this.user.passwordConfirmation) {
         authService
@@ -119,10 +143,15 @@ export default {
             this.user.email
           )
           .then(() => {
-            authService.login(this.user.email, this.user.password).then(() => {
-              this.$eventHub.$emit("logged-in");
-              this.$router.push("/");
+            this.login({
+              email: this.user.email,
+              password: this.user.password
+            }).then(() => {
+              this.$router.push("/gradebooks");
             });
+          })
+          .catch(e => {
+            this.errorsList = e.response.data.errors;
           });
       } else {
         alert("Your passwords doesn`t match, try again, please");

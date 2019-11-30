@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="container">
-      <div class="form-group row">
-        <label for="firstName" class="form-control col-sm-2">First Name</label>
+      <div class="form-group row mt-3">
+        <label for="firstName" class="form-control col-sm">First Name</label>
         <input
           type="text"
           class="form-control col-sm-8"
@@ -12,8 +12,8 @@
         />
       </div>
 
-      <div class="form-group row">
-        <label for="lastName" class="form-control col-sm-2">Last Name</label>
+      <div class="form-group row mt-3">
+        <label for="lastName" class="form-control col-sm">Last Name</label>
         <input
           type="text"
           class="form-control col-sm-8"
@@ -24,7 +24,7 @@
       </div>
 
       <div>
-        <button class="btn btn-sml" @click.prevent="addNewImageInput">Add more images</button>
+        <button class="btn btn-sm btn-primary mt-3" @click.prevent="addNewImageInput">Add images</button>
 
         <div class="form-group" v-for="(url, index) in newStudent.url" :key="index">
           <div>
@@ -38,14 +38,27 @@
               v-validate="{ required: true,  url , regex: /(?:(?:(?:\.jpg))|(?:(?:\.jpeg))|(?:(?:\.png)))/ }"
               required
             />
-            <button class="btn btn-sml" @click.prevent="removeImage(index)">Remove image</button>
-            <button class="btn btn-sml" @click.prevent="moveUp(index)">Move image up</button>
-            <button class="btn btn-sml" @click.prevent="moveDown(index)">Move image down</button>
+            <button class="btn btn-sm mt-3" @click.prevent="removeImage(index)">Remove image</button>
+            <button class="btn btn-sm mt-3" @click.prevent="moveUp(index)">Move image up</button>
+            <button class="btn btn-sm mt-3" @click.prevent="moveDown(index)">Move image down</button>
           </div>
         </div>
       </div>
 
-      <button class="btn btn-primary" @click="handleStudent">Submit</button>
+      <div v-if="errorsList.length > 0" class="alert alert-danger">
+        <p v-for="(error, index) in errors" :key="index">
+          Message: {{ error.message }}
+          <br />
+          <span v-for="(err, i) in errors[index].errors" :key="i">
+            <span v-for="(e, j) in err" :key="j">
+              Error: {{ err[j] }}
+              <br />
+            </span>
+          </span>
+        </p>
+      </div>
+
+      <button class="btn btn-primary mt-3" @click="handleStudent">Submit</button>
     </div>
   </div>
 </template>
@@ -53,6 +66,7 @@
 <script>
 import { diariesService } from "@/services/DiariesService";
 import { authService } from "@/services/Auth";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -63,7 +77,8 @@ export default {
         lastName: "",
         url: []
       },
-      isAuthenticated: authService.isAuthenticated()
+      isAuthenticated: authService.isAuthenticated(),
+      errorsList: []
     };
   },
   methods: {
@@ -78,7 +93,7 @@ export default {
           this.$router.push(`/single-gradebook/${this.$route.params.id}`);
         })
         .catch(error => {
-          console.log(error);
+          this.errorsList = error.response.data.errors;
         });
     },
     addNewImageInput() {
@@ -108,7 +123,14 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters({
+      user: "getUser"
+    })
+  },
+
   created() {
+    console.log("fdsafdsafdsa");
     diariesService
       .get(this.$route.params.id)
       .then(response => {
@@ -116,7 +138,7 @@ export default {
         console.log(this.diary);
       })
       .catch(error => {
-        console.log(error);
+        this.errorsList = error.response.data.errors;
       });
   }
 };

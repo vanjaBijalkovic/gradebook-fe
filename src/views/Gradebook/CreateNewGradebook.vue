@@ -3,7 +3,7 @@
     <h3>Create Gradebook Page</h3>
     <div class="container">
       <div class="form-group row">
-        <label for="title" class="form-control col-sm-2">Gradebook title</label>
+        <label for="title" class="form-control col-sm">Gradebook title</label>
         <input
           type="text"
           class="form-control col-sm-8"
@@ -17,7 +17,7 @@
       </div>
 
       <div class="form-group row">
-        <label for="professor" class="form-control col-sm-2">Professor</label>
+        <label for="professor" class="form-control col-sm">Professor</label>
         <select
           class="form-control col-sm-4"
           name="professor"
@@ -31,6 +31,13 @@
           >{{ professor.user.firstName }} {{professor.user.lastName}}</option>
         </select>
       </div>
+
+      <div>
+   
+        <div v-if="errorList" class="alert alert-danger">
+          {{ errorList }}
+        </div>   
+    </div>
 
       <div>
         <button class="btn btn-primary" @click="handleDiary">Submit</button>
@@ -48,7 +55,9 @@ export default {
     return {
       newDiary: {},
       professors: {},
-      id: ""
+      id: "",
+      errorList: null,
+      currentProfessor: []
     };
   },
   methods: {
@@ -56,17 +65,18 @@ export default {
       if (this.$route.params.id) {
         diariesService.diaryEdit(this.newDiary.id, this.newDiary)
         .then(() => {
-          this.$router.push("/");
+          this.$router.push("/gradebooks");
         });
-      }
+      } else {
         diariesService
           .diaryAdd(this.newDiary)
-          .then(response => {
-            this.$router.push("/");
+          .then(() => {
+            this.$router.push("/gradebooks");
           })
           .catch(error => {
-            alert(error);
+            this.errorList = error.response.data.errors;
           });
+      }
       }
     },
     created() {
@@ -75,18 +85,20 @@ export default {
           .get(this.$route.params.id)
           .then(response => {
             this.newDiary = response.data;
+            this.currentProfessor.push(response.data.professor);
           })
           .catch(error => {
-            console.log(error);
+            this.errorList = error.response.data.errors;
           });
       }
       professorsService
         .getAll()
         .then(response => {
           this.professors = response.data.filter(professor => !professor.diary);
+          this.professors = this.professors.concat(this.currentProfessor)
         })
         .catch(error => {
-          console.log(error);
+          this.errorList = error.response.data.errors;
         });
     }
   

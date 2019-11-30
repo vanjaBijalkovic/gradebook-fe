@@ -7,20 +7,29 @@
         <input
           type="text"
           id="firstName"
+          class="ml-3"
           v-model="newProfessor.firstName"
           required
           minlength="2"
           maxlength="255"
         />
       </div>
-      <div>
-        <label for="lastName">Last Name</label>
-        <input type="text" id="lastName" v-model="newProfessor.lastName" required minlength="2" />
+      <div class="mt-3">
+        <label for="lastName mt-3">Last Name</label>
+        <input
+          type="text"
+          id="lastName"
+          class="ml-3"
+          v-model="newProfessor.lastName"
+          required
+          minlength="2"
+        />
       </div>
-      <div>
-        <button class="btn btn-sml" @click.prevent="addNewImageInput">Add more images</button>
+      <div class="mt-3 mb-2">
+        <button class="btn btn-sm btn-primary" @click.prevent="addNewImageInput">Add images</button>
+        <br />
 
-        <div class="form-group" v-for="(url, index) in newProfessor.url" :key="index">
+        <div class="form-group mt-2" v-for="(url, index) in newProfessor.url" :key="index">
           <div>
             <input
               :key="newProfessor.url.id"
@@ -32,26 +41,34 @@
               v-validate="{ required: true,  url , regex: /(?:(?:(?:\.jpg))|(?:(?:\.jpeg))|(?:(?:\.png)))/ }"
               required
             />
-            <button class="btn btn-sml" @click.prevent="removeImage(index)">Remove image</button>
-            <button class="btn btn-sml" @click.prevent="moveUp(index)">Move image up</button>
-            <button class="btn btn-sml" @click.prevent="moveDown(index)">Move image down</button>
+            <button class="btn btn-sm" @click.prevent="removeImage(index)">Remove image</button>
+            <button class="btn btn-sm" @click.prevent="moveUp(index)">Move image up</button>
+            <button class="btn btn-sm" @click.prevent="moveDown(index)">Move image down</button>
           </div>
         </div>
-        <div class="form-group row diary">
-        <label for="diary" class="form-control col-sm-2">Diary</label>
-        <select
-          class="form-control col-sm-4"
-          name="diary"
-          id="diary"
-          v-model="newProfessor.diary_id"
-        >
-          <option
-            :value="diary.id"
-            v-for="diary in diaries"
-            :key="diary.id"
-          >{{ diary.title}}</option>
-        </select>
+        <div class="form-group row diary mt-2">
+          <label for="diary" class="form-control col-sm-2 mr-3">Diary</label>
+          <select
+            class="form-control col-sm-4"
+            name="diary"
+            id="diary"
+            v-model="newProfessor.diary_id"
+          >
+            <option :value="diary.id" v-for="diary in diaries" :key="diary.id">{{ diary.title}}</option>
+          </select>
         </div>
+      </div>
+      <div v-if="errorsList.length > 0" class="alert alert-danger">
+        <p v-for="(error, index) in errors" :key="index">
+          Message: {{ error.message }}
+          <br />
+          <span v-for="(err, i) in errors[index].errors" :key="i">
+            <span v-for="(e, j) in err" :key="j">
+              Error: {{ err[j] }}
+              <br />
+            </span>
+          </span>
+        </p>
       </div>
       <button name="submit" type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -69,9 +86,10 @@ export default {
         url: [],
         firstName: "",
         lastName: "",
-        diary_id:""
+        diary_id: ""
       },
-      diaries: {}
+      diaries: {},
+      errorsList: []
     };
   },
   methods: {
@@ -79,22 +97,36 @@ export default {
       this.newProfessor.url = this.newProfessor.url.map(obj => {
         return obj.url;
       });
-      professorsService.add(this.newProfessor);
-      this.$router.push("/all-professors");
+      professorsService
+        .add(this.newProfessor)
+        .then(r => {
+          this.$router.push("/all-professors");
+          console.log(r);
+        })
+        .catch(e => {
+          this.errorsList = e.response.data.errors;
+        });
     },
     addNewImageInput() {
       this.newProfessor.url.push({ id: this.id++, url: "" });
-      console.log(this.newProfessor);
     },
     moveUp(index) {
       if (index != 0) {
-        this.newProfessor.url.splice(index - 1, 0, this.newProfessor.url[index]);
+        this.newProfessor.url.splice(
+          index - 1,
+          0,
+          this.newProfessor.url[index]
+        );
         this.newProfessor.url.splice(index + 1, 1);
       }
     },
     moveDown(index) {
       if (index != this.newProfessor.url.length - 1) {
-        this.newProfessor.url.splice(index + 2, 0, this.newProfessor.url[index]);
+        this.newProfessor.url.splice(
+          index + 2,
+          0,
+          this.newProfessor.url[index]
+        );
         this.newProfessor.url.splice(index, 1);
       }
     },
@@ -111,15 +143,15 @@ export default {
   },
   created() {
     diariesService
-        .getAll()
-        .then(response => {
-          this.diaries = response.data.filter(diary => !diary.professor_id);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      .getAll()
+      .then(response => {
+        this.diaries = response.data.filter(diary => !diary.professor_id);
+      })
+      .catch(error => {
+        console.log(error)
+        this.errorsList = error.response.data.errors;
+      });
   }
-  
 };
 </script>
 

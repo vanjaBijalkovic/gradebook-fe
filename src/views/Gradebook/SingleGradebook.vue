@@ -7,7 +7,7 @@
           <th>
             <router-link
               class="btn btn-secondary"
-              v-if="isAuthenticated"
+              v-if="user"
               :to="{ name: 'add-student', params: { id: diary.id }}"
             >Add Student</router-link>
           </th>
@@ -20,18 +20,10 @@
         <tr v-if="diary && diary.professor">
           <td width="200">
             <div class="route">
-              <button
-                v-if="isAuthenticated"
-                class="btn btn-danger"
-                @click="deleteDiary()"
-              >Delete Gradebook</button>
+              <button v-if="user" class="btn btn-danger" @click="deleteDiary()">Delete Gradebook</button>
             </div>
             <div class="route">
-              <router-link
-                v-if="isAuthenticated"
-                class="btn btn-secondary"
-                :to="editRoute()"
-              >Edit Gradebook</router-link>
+              <router-link v-if="user" class="btn btn-secondary" :to="editRoute()">Edit Gradebook</router-link>
             </div>
           </td>
           <td>{{diary.title}}</td>
@@ -57,13 +49,21 @@
           {{comment.user.firstName}} {{comment.user.lastName}}
         </p>
         <div>
-          <button
-            class="btn btn-secondary"
-            v-if="isAuthenticated"
-            @click="handleDelete(comment.id)"
-          >Delete</button>
+          <button class="btn btn-secondary" v-if="user" @click="handleDelete(comment.id)">Delete</button>
         </div>
       </div>
+    </div>
+    <div v-if="errorsList.length > 0" class="alert alert-danger">
+      <p v-for="(error, index) in errors" :key="index">
+        Message: {{ error.message }}
+        <br />
+        <span v-for="(err, i) in errors[index].errors" :key="i">
+          <span v-for="(e, j) in err" :key="j">
+            Error: {{ err[j] }}
+            <br />
+          </span>
+        </span>
+      </p>
     </div>
     <div class="container">
       <textarea v-model="newComment.text" cols="100" rows="5" placeholder="Writte your comment"></textarea>
@@ -78,6 +78,7 @@
 import { diariesService } from "@/services/DiariesService";
 import { commentsService } from "@/services/CommentsService";
 import { authService } from "@/services/Auth";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -86,9 +87,14 @@ export default {
       newComment: {
         text: ""
       },
-      isAuthenticated: authService.isAuthenticated(),
       loggedUser: ""
     };
+  },
+
+  computed: {
+    ...mapGetters({
+      user: "getUser"
+    })
   },
 
   methods: {
@@ -104,7 +110,7 @@ export default {
               this.diary = response.data;
             })
             .catch(error => {
-              console.log(error);
+              this.errorsList = error.response.data.errors;
             });
         });
     },
@@ -120,7 +126,7 @@ export default {
     deleteDiary() {
       if (confirm("Are you sure?")) {
         diariesService.delete(this.diary.id).then(() => {
-          this.$router.push("/");
+          this.$router.push("/gradebooks");
         });
       }
     },
@@ -137,7 +143,7 @@ export default {
         this.diary = response.data;
       })
       .catch(error => {
-        console.log(error);
+        this.errorsList = error.response.data.errors;
       });
   },
   beforeDestroy() {

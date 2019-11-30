@@ -24,6 +24,18 @@
           >{{professor.diary.title}}</router-link>
         </td>
         <td v-if="professor && professor.diary">{{ professor.diary.students.length }}</td>
+        <div v-if="errorsList.length > 0" class="alert alert-danger">
+          <p v-for="(error, index) in errors" :key="index">
+            Message: {{ error.message }}
+            <br />
+            <span v-for="(err, i) in errors[index].errors" :key="i">
+              <span v-for="(e, j) in err" :key="j">
+                Error: {{ err[j] }}
+                <br />
+              </span>
+            </span>
+          </p>
+        </div>
       </tbody>
     </table>
   </div>
@@ -34,7 +46,7 @@ import { professorsService } from "@/services/ProfessorsService";
 export default {
   data() {
     return {
-      professor: {},
+      professor: {}
     };
   },
   beforeRouteEnter(to, from, next) {

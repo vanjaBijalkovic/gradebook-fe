@@ -18,9 +18,16 @@
         <tr>
           <td>{{professorArray.user.firstName}}</td>
           <td>{{professorArray.user.lastName}}</td>
-          <td v-for="image in professorArray.professor_has_many_images.slice(0,1)" :key="image.id">
-            <img :src="image.url" alt width="64" height="64" />
-          </td>
+          <template v-if="professorArray.professor_has_many_images.length"> 
+            <td v-for="image in professorArray.professor_has_many_images.slice(0,1)" :key="image.id">
+              <img :src="image.url" alt width="64" height="64" />
+            </td>
+          </template>
+          <template v-if="!professorArray.professor_has_many_images.length">
+            <div>
+              Professor dont have pictures
+            </div>
+          </template>
           <template>
             <td v-if="professorArray.diary">{{professorArray.diary.title}}</td>
             <td v-else>Professor is available</td>

@@ -10,6 +10,7 @@ import CreateNewProfessor from './views/Professor/CreateNewProfessor'
 import MyGradeBook from './views/Gradebook/MyGradeBook'
 import SingleGradebook from './views/Gradebook/SingleGradebook'
 import SingleProfessor from './views/Professor/SingleProfessor'
+import WelcomeScreen from './views/WelcomeScreen'
 
 Vue.use(Router)
 
@@ -19,6 +20,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'welcome',
+      component: WelcomeScreen
+    },
+    {
+      path: '/gradebooks',
       name: 'gradebooks',
       component: Gradebooks
     },
@@ -34,6 +40,11 @@ export default new Router({
     },
     {
       path: '/add-student/:id',
+      name: 'add-student',
+      component: AddNewStudent
+    },
+    {
+      path: '/my-gradebook/add-student/:id',
       name: 'add-student',
       component: AddNewStudent
     },
