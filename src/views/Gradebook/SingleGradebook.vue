@@ -1,14 +1,15 @@
 <template>
-  <div>
-    <h3>Single Gradebook Page</h3>
-    <table class="table table-striped table-bordered" style="width:100%">
+  <div class="container">
+    <h3 class="h3">Single Gradebook Page</h3>
+    <table class="table table-dark">
       <thead>
         <tr>
           <th>
             <router-link
-              class="btn btn-secondary"
+              class="btn btn-md btn-primary"
               v-if="user"
               :to="{ name: 'add-student', params: { id: diary.id }}"
+              style="min-width: 160px;"
             >Add Student</router-link>
           </th>
           <th>Gradebook</th>
@@ -20,36 +21,33 @@
         <tr v-if="diary && diary.professor">
           <td width="200">
             <div class="route">
-              <button v-if="user" class="btn btn-danger" @click="deleteDiary()">Delete Gradebook</button>
+              <button v-if="user" class="btn btn-md btn-danger" @click="deleteDiary()" style="min-width: 160px;">Delete Gradebook</button>
             </div>
             <div class="route">
-              <router-link v-if="user" class="btn btn-secondary" :to="editRoute()">Edit Gradebook</router-link>
+              <router-link v-if="user" class="btn btn-md btn-warning" :to="editRoute()" style="min-width: 160px;">Edit Gradebook</router-link>
             </div>
           </td>
           <td>{{diary.title}}</td>
           <td>{{diary.professor.user.firstName}} {{diary.professor.user.lastName}}</td>
-          <div class="container">
-            <ol class="list-group">
+          <td>
+            <ul style="list-style:none;">
               <li
-                class="list-group-item"
                 v-for="student in diary.students"
                 :key="student.id"
               >{{student.firstName }} {{student.lastName}}</li>
-            </ol>
-          </div>
+            </ul>
+          </td>
         </tr>
       </tbody>
     </table>
     <div class="comments-box">
       <h4>Comments</h4>
       <div class="comments" v-for="comment in diary.comments" :key="comment.id">
-        <li>{{comment.text}}</li>
-        <p>
-          <b>Comment Author:</b>
-          {{comment.user.firstName}} {{comment.user.lastName}}
-        </p>
+        <p>{{comment.text}}</p>
+        <p><b>Comment Author:</b></p>
+        <p><b>{{comment.user.firstName}} {{comment.user.lastName}}</b></p>
         <div>
-          <button class="btn btn-secondary" v-if="user" @click="handleDelete(comment.id)">Delete</button>
+          <button class="btn btn-md btn-danger mt-3 mb-3" v-if="user" @click="handleDelete(comment.id)">Delete</button>
         </div>
       </div>
     </div>
@@ -65,11 +63,9 @@
         </span>
       </p>
     </div>
-    <div class="container">
-      <textarea v-model="newComment.text" cols="100" rows="5" placeholder="Writte your comment"></textarea>
-      <div>
-        <button class="btn btn-primary" @click="submitComment">Submit Comment</button>
-      </div>
+    <textarea class="form-control mb-3" v-model="newComment.text" cols="100" rows="5" placeholder="Writte your comment"></textarea>
+    <div>
+      <button class="btn btn-primary" @click="submitComment">Submit Comment</button>
     </div>
   </div>
 </template>

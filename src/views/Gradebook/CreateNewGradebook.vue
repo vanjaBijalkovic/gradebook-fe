@@ -2,11 +2,11 @@
   <div>
     <h3>Create Gradebook Page</h3>
     <div class="container">
-      <div class="form-group row">
-        <label for="title" class="form-control col-sm">Gradebook title</label>
+      <div class="form-group">
+        <label for="title">Gradebook title</label>
         <input
           type="text"
-          class="form-control col-sm-8"
+          class="form-control"
           id="title"
           name="title"
           v-model="newDiary.title"
@@ -16,10 +16,10 @@
         />
       </div>
 
-      <div class="form-group row">
-        <label for="professor" class="form-control col-sm">Professor</label>
+      <div class="form-group">
+        <label for="professor">Professor</label>
         <select
-          class="form-control col-sm-4"
+          class="form-control"
           name="professor"
           id="professor"
           v-model="newDiary.professor_id"
