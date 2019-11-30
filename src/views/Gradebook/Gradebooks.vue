@@ -82,7 +82,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
       if(window.localStorage.getItem('loginToken')) {
-         diariesService.searchDiary("", 1).then(response => {
+         diariesService.getAll(1).then(response => {
           next(vm => {
             vm.currentPage = response.data.current_page;
             vm.diaries = response.data.data;
