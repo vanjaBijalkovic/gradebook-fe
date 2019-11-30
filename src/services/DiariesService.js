@@ -32,7 +32,7 @@ export default class DiariesService {
     }
 
     searchDiary(term, page) {
-        return axios.post(`search?search_term=${term}&page=${page}`);
+        return axios.get(`search?search_term=${term}&page=${page}`);
     }
 
     myDiary(id) {

@@ -3,7 +3,8 @@
     <h3>All Gradebooks Page</h3>
     <div class="filter">
       <label class="input" for="term">Gradebook Filter</label>
-      <input type="text" v-model="term" autofocus />
+      <input type="text" v-model="term" @keyup.enter="search(1)" autofocus />
+      <button class="btn btn-sm btn-primary ml-3" @click="search(1)">Search</button>
     </div>
     <p v-if="diaries.length == 0">There is no more gradebooks in base, try again</p>
       <table class="table table-striped table-bordered" style="width:100%">
@@ -26,8 +27,16 @@
           </tr>
         </tbody>
       </table>
-      <button class="btn btn-sm btn-primary" v-if="lastPage > 0" @click="getDiaries(false)">Previous</button>
-      <button class="btn btn-sm btn-primary ml-3" @click="getDiaries(true)">Next</button>
+      <button
+        class="btn btn-sm btn-primary"
+        :disabled="currentPage === 1"
+        @click="getDiaries(false)"
+      >Previous</button>
+      <button
+        class="btn btn-sm btn-primary ml-3"
+        :disabled="currentPage >= lastPage"
+        @click="getDiaries(true)"
+      >Next</button>
     </div>
 </template>
 
@@ -43,8 +52,9 @@ export default {
       diaries: [],
       paginate: ["diaries"],
       term: "",
-      currentPage: 0,
-      lastPage: 0
+      currentPage: 1,
+      lastPage: 0,
+      canFetchNext: true
     };
   },
   methods: {
@@ -56,15 +66,13 @@ export default {
       } else if (this.currentPage > 1) {
         this.currentPage --;
       }
-      diariesService.getAll(this.currentPage).then(response => {
-        this.currentPage = response.data.current_page;
-        this.diaries = response.data.data;
-      })
+      this.search(this.currentPage);
     },
-    search() {
-      diariesService.searchDiary(this.currentPage).then(response => {
+    search(currentPage) {
+      diariesService.searchDiary(this.term, currentPage).then(response => {
         this.currentPage = response.data.current_page;
         this.diaries = response.data.data;
+        this.lastPage = response.data.last_page;
       })
     }
   },

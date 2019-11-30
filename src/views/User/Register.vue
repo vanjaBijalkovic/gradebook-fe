@@ -41,7 +41,7 @@
             <input
               id="password"
               name="password"
-              type="text"
+              type="password"
               class="form-control here"
               v-model="user.password"
               pattern="(?=.*\d).{8,}"
@@ -57,7 +57,7 @@
             <input
               id="passwordConfirmation"
               name="passwordConfirmation"
-              type="text"
+              type="password"
               class="form-control here"
               v-model="user.passwordConfirmation"
               minlength="8"
