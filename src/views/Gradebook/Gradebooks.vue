@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <h3>All Gradebooks Page</h3>
-    <div class="filter">
-      <label class="input" for="term">Gradebook Filter</label>
-      <input type="text" v-model="term" @keyup.enter="search(1)" autofocus />
+  <div class=container>
+    <h3 class="h3"> All Gradebooks Page</h3>
+    <div class="form-group">
+      <label  class="form-check-label" for="term">Gradebook Filter</label>
+      <input type="text" v-model="term" @keyup.enter="search(1)" autofocus  class="form-control" />
       <button class="btn btn-sm btn-primary ml-3" @click="search(1)">Search</button>
     </div>
     <p v-if="diaries.length == 0">There is no more gradebooks in base, try again</p>
-      <table class="table table-striped table-bordered" style="width:100%">
+      <table class="table table-dark">
         <thead>
           <tr>
             <th>Gradebook</th>
@@ -17,24 +17,28 @@
         </thead>
         <tbody v-for="diary in diaries" :key="diary.id">
           <tr>
-            <router-link :to="{ name: 'single-gradebook', params: { id: diary.id }}">{{diary.title}}</router-link>
             <td>
-              <router-link
-                :to="{ name: 'single-professor', params: { id: diary.professor.id }}"
-              >{{diary.professor.user.firstName}} {{diary.professor.user.lastName}}</router-link>
+              <router-link :to="{ name: 'single-gradebook', params: { id: diary.id }}" style="color: white">
+                {{diary.title}}
+              </router-link>
+            </td>
+            <td>
+              <router-link :to="{ name: 'single-professor', params: { id: diary.professor.id }}"  style="color: white">
+                {{diary.professor.user.firstName}} {{diary.professor.user.lastName}}
+              </router-link>
             </td>
             <td>{{humanFormat(diary.created_at)}}</td>
           </tr>
         </tbody>
       </table>
       <button
-        class="btn btn-sm btn-primary"
+        class="btn btn-md btn-primary mr-2"
         :disabled="currentPage === 1"
         @click="getDiaries(false)"
       >Previous</button>
       <button
-        class="btn btn-sm btn-primary ml-3"
         :disabled="currentPage >= lastPage"
+        class="btn btn-md btn-primary ml-2"
         @click="getDiaries(true)"
       >Next</button>
     </div>

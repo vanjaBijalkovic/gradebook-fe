@@ -1,65 +1,63 @@
 <template>
-  <div>
-    <div class="container">
-      <div class="form-group row mt-3">
-        <label for="firstName" class="form-control col-sm">First Name</label>
-        <input
-          type="text"
-          class="form-control col-sm-8"
-          id="firstName"
-          name="firstName"
-          v-model="newStudent.firstName"
-        />
-      </div>
+  <div class="container">
+    <div class="form-group mt-4">
+      <label for="firstName" class="text-left d-block">First Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="firstName"
+        name="firstName"
+        v-model="newStudent.firstName"
+      />
+    </div>
 
-      <div class="form-group row mt-3">
-        <label for="lastName" class="form-control col-sm">Last Name</label>
-        <input
-          type="text"
-          class="form-control col-sm-8"
-          id="lastName"
-          name="lastName"
-          v-model="newStudent.lastName"
-        />
-      </div>
+    <div class="form-group">
+      <label for="lastName" class="text-left d-block">Last Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="lastName"
+        name="lastName"
+        v-model="newStudent.lastName"
+      />
+    </div>
 
-      <div>
-        <button class="btn btn-sm btn-primary mt-3" @click.prevent="addNewImageInput">Add images</button>
+    <div>
+      <button class="btn btn-md btn-primary mt-3 mb-3" @click.prevent="addNewImageInput" style="min-width: 140px;">Add images</button>
 
-        <div class="form-group" v-for="(url, index) in newStudent.url" :key="index">
-          <div>
-            <input
-              :key="newStudent.url.id"
-              autofocus
-              v-model="url.url"
-              placeholder="Image URL"
-              class="form-control"
-              :name="'image_' + newStudent.url[index].id"
-              v-validate="{ required: true,  url , regex: /(?:(?:(?:\.jpg))|(?:(?:\.jpeg))|(?:(?:\.png)))/ }"
-              required
-            />
-            <button class="btn btn-sm mt-3" @click.prevent="removeImage(index)">Remove image</button>
-            <button class="btn btn-sm mt-3" @click.prevent="moveUp(index)">Move image up</button>
-            <button class="btn btn-sm mt-3" @click.prevent="moveDown(index)">Move image down</button>
-          </div>
+      <div class="form-group" v-for="(url, index) in newStudent.url" :key="index">
+        <div>
+          <input
+            :key="newStudent.url.id"
+            autofocus
+            v-model="url.url"
+            placeholder="Image URL"
+            class="form-control"
+            :name="'image_' + newStudent.url[index].id"
+            v-validate="{ required: true,  url , regex: /(?:(?:(?:\.jpg))|(?:(?:\.jpeg))|(?:(?:\.png)))/ }"
+            required
+          />
+          <button class="btn btn-md btn btn-outline-primary ml-2 mr-2 mt-3" @click.prevent="removeImage(index)">Remove image</button>
+          <button class="btn btn-md btn btn-outline-primary ml-2 mr-2 mt-3" @click.prevent="moveUp(index)">Move image up</button>
+          <button class="btn btn-md btn btn-outline-primary ml-2 mr-2 mt-3" @click.prevent="moveDown(index)">Move image down</button>
         </div>
       </div>
-
-      <div v-if="errorsList.length > 0" class="alert alert-danger">
-        <p v-for="(error, index) in errors" :key="index">
-          Message: {{ error.message }}
-          <br />
-          <span v-for="(err, i) in errors[index].errors" :key="i">
-            <span v-for="(e, j) in err" :key="j">
-              Error: {{ err[j] }}
-              <br />
-            </span>
-          </span>
-        </p>
-      </div>
-
-      <button class="btn btn-primary mt-3" @click="handleStudent">Submit</button>
     </div>
+
+    <div v-if="errorsList.length > 0" class="alert alert-danger">
+      <p v-for="(error, index) in errors" :key="index">
+        Message: {{ error.message }}
+        <br />
+        <span v-for="(err, i) in errors[index].errors" :key="i">
+          <span v-for="(e, j) in err" :key="j">
+            Error: {{ err[j] }}
+            <br />
+          </span>
+        </span>
+      </p>
+    </div>
+
+    <button class="btn btn-md btn-primary mt-3" @click="handleStudent" style="min-width: 140px;">Submit</button>
   </div>
 </template>
 

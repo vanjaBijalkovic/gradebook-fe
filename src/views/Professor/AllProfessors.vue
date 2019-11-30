@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <h3>All Professors Page</h3>
-    <div class="filter">
+  <div class="container">
+    <h3 class="h3">All Professors Page</h3>
+    <div class="form-group">
       <label class="input" for="term">Professors filter</label>
-      <input type="text" v-model="term" autofocus />
+      <input type="text" v-model="term" autofocus  class="form-control" />
     </div>
-    <table class="table table-striped table-bordered" style="width:100%">
+    <table class="table table-dark">
       <thead>
         <tr>
           <th>FirstName</th>
