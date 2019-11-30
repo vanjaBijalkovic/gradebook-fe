@@ -7,7 +7,7 @@ export default class AuthService {
   }
 
   login(email, password) {
-    return axios.post('http://localhost:8000/api/login', {
+    return axios.post('http://www.gradebooktest.com/api/login', {
       email, password
     }).then(({data}) => {
       window.localStorage.setItem('user', JSON.stringify(data.user))
@@ -33,7 +33,7 @@ export default class AuthService {
   }
 
   register(firstName, lastName, password,email) {
-    return axios.post('http://localhost:8000/api/register', {
+    return axios.post('http://www.gradebooktest.com/api/register', {
       firstName,lastName, email, password
     })
   }
