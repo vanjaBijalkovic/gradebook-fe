@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default class DiariesService {
     constructor() {
-        axios.defaults.baseURL = 'http://localhost:8000/api/'
+        axios.defaults.baseURL = 'http://www.gradebooktest.com/api/'
         axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem('loginToken')}`
     }
 
