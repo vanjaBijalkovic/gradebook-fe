@@ -31,28 +31,27 @@
           </td>
           <td>{{diary.title}}</td>
           <td>{{diary.professor.user.firstName}} {{diary.professor.user.lastName}}</td>
-          <ol class="list-group">
-            <li
-              class="list-group-item"
-              v-for="student in diary.students"
-              :key="student.id"
-            >
-              {{student.firstName }} {{student.lastName}}
-            </li>
-          </ol>
+          <td>
+            <ul style="list-style:none;">
+              <li
+                v-for="student in diary.students"
+                :key="student.id"
+              >
+                {{student.firstName }} {{student.lastName}}
+              </li>
+            </ul>
+          </td>
         </tr>
       </tbody>
     </table>
     <div class="comments-box">
       <h4 clas="h4">Comments</h4>
       <div class="comments" v-for="comment in diary.comments" :key="comment.id">
-        <li>{{comment.text}}</li>
-        <p>
-          <b>Comment Author:</b>
-          {{comment.user.firstName}} {{comment.user.lastName}}
-        </p>
+        <p>{{comment.text}}</p>
+        <p><b>Comment Author:</b></p>
+        <p><b>{{comment.user.firstName}} {{comment.user.lastName}}</b></p>
         <div>
-          <button class="btn btn-md btn-secondary" v-if="user" @click="handleDelete(comment.id)">Delete</button>
+          <button class="btn btn-md btn-danger mt-3 mb-3" v-if="user" @click="handleDelete(comment.id)">Delete</button>
         </div>
       </div>
     </div>
