@@ -26,17 +26,9 @@
           </tr>
         </tbody>
       </table>
-    <!-- <div>
-      <paginate-links
-        class="btn btn-primary mt-3"
-        for="diaries"
-        :simple="{
-        prev: 'Back',
-        next: 'Next'
-        }"
-      ></paginate-links> -->
+      <button class="btn btn-sm btn-primary" v-if="lastPage > 0" @click="getDiaries(false)">Previous</button>
+      <button class="btn btn-sm btn-primary ml-3" @click="getDiaries(true)">Next</button>
     </div>
-  </div>
 </template>
 
 <script>
@@ -51,22 +43,38 @@ export default {
       diaries: [],
       paginate: ["diaries"],
       term: "",
+      currentPage: 0,
+      lastPage: 0
     };
   },
-  computed: {
-    filteredArray() {
-      console.log(this.diaries)
-      // return this.diaries.filter(diary => {
-      //   return diary.title.toLowerCase().includes(this.term.toLowerCase());
-      // });
+  methods: {
+    getDiaries(isNext) {
+      if (isNext) {
+        if (this.currentPage < this.lastPage) {
+          this.currentPage ++;
+        }
+      } else if (this.currentPage > 1) {
+        this.currentPage --;
+      }
+      diariesService.getAll(this.currentPage).then(response => {
+        this.currentPage = response.data.current_page;
+        this.diaries = response.data.data;
+      })
+    },
+    search() {
+      diariesService.searchDiary(this.currentPage).then(response => {
+        this.currentPage = response.data.current_page;
+        this.diaries = response.data.data;
+      })
     }
   },
   beforeRouteEnter(to, from, next) {
       if(window.localStorage.getItem('loginToken')) {
-        diariesService.getAll().then(response => {
+        diariesService.getAll(1).then(response => {
           next(vm => {
-            console.log(response.data)
+            vm.currentPage = response.data.current_page;
             vm.diaries = response.data.data;
+            vm.lastPage = response.data.last_page;
           });
         });
       }

@@ -34,9 +34,14 @@
 
       <div>
    
-        <div v-if="errorList" class="alert alert-danger">
-          {{ errorList }}
-        </div>   
+      <div v-if="errorList.length > 0" class="alert alert-danger">
+        <div v-for="(error, index) in errorList" :key="index">
+          Message: {{ error.message }}
+          <div v-for="(e, index) in error.errors" :key="index">
+            {{ e }}
+          </div>
+        </div>
+      </div>
     </div>
 
       <div>
@@ -56,7 +61,7 @@ export default {
       newDiary: {},
       professors: {},
       id: "",
-      errorList: null,
+      errorList: [],
       currentProfessor: []
     };
   },
@@ -74,7 +79,7 @@ export default {
             this.$router.push("/gradebooks");
           })
           .catch(error => {
-            this.errorList = error.response.data.errors;
+            this.errorList.push(error.response.data);
           });
       }
       }

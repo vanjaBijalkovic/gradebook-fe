@@ -87,7 +87,8 @@ export default {
       newComment: {
         text: ""
       },
-      loggedUser: ""
+      loggedUser: "",
+      errorsList: []
     };
   },
 

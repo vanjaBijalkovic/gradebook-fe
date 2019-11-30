@@ -54,15 +54,8 @@
       </div>
     </div>
     <div v-if="errorsList.length > 0" class="alert alert-danger">
-      <p v-for="(error, index) in errors" :key="index">
-        Message: {{ error.message }}
-        <br />
-        <span v-for="(err, i) in errors[index].errors" :key="i">
-          <span v-for="(e, j) in err" :key="j">
-            Error: {{ err[j] }}
-            <br />
-          </span>
-        </span>
+      <p v-for="(error, index) in errorsList" :key="index">
+        Message: {{ error }}
       </p>
     </div>
     <div class="container">
@@ -76,10 +69,8 @@
 
 <script>
 import { diariesService } from "@/services/DiariesService";
-import { professorsService } from "@/services/ProfessorsService";
 import { commentsService } from "@/services/CommentsService";
-import { authService } from "@/services/Auth";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -101,7 +92,7 @@ export default {
     submitComment() {
       if (this.diary && this.diary.id) {
         this.newComment.user_id = this.diary.professor.user.id;
-        diariesService.myDiary(this.diary.id, this.newComment).then(() => {
+        diariesService.diaryCommentAdd(this.diary.id, this.newComment).then(() => {
           this.newComment = {};
           diariesService
             .get(this.$route.params.id)
@@ -113,16 +104,18 @@ export default {
             });
         });
       } else {
-        this.error =
-          "You dont have your diary. Please first set your own diary";
+        if (this.errorsList.length < 1) {
+          this.errorsList.push( "You dont have your diary. Please first set your own diary");
+        }
       }
     },
     navigateToStudends() {
       if (this.diary.id) {
         this.$router.push(`add-student/${this.diary.id}`);
       } else {
-        this.error =
-          "You dont have your diary. Please first set your own diary";
+        if (this.errorsList.length < 1) {
+          this.errorsList.push( "You dont have your diary. Please first set your own diary");
+        }
       }
     },
     handleDelete(id) {

@@ -58,17 +58,13 @@
           </select>
         </div>
       </div>
-      <div v-if="errorsList.length > 0" class="alert alert-danger">
-        <p v-for="(error, index) in errors" :key="index">
+      <div v-if="errorsArray.length > 0" class="alert alert-danger">
+        <div v-for="(error, index) in errorsArray" :key="index">
           Message: {{ error.message }}
-          <br />
-          <span v-for="(err, i) in errors[index].errors" :key="i">
-            <span v-for="(e, j) in err" :key="j">
-              Error: {{ err[j] }}
-              <br />
-            </span>
-          </span>
-        </p>
+          <div v-for="(e, index) in error.errors" :key="index">
+            {{ e }}
+          </div>
+        </div>
       </div>
       <button name="submit" type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -92,6 +88,11 @@ export default {
       errorsList: []
     };
   },
+  computed: {
+    errorsArray() {
+      return this.errorsList 
+    }
+  },
   methods: {
     handleForm() {
       this.newProfessor.url = this.newProfessor.url.map(obj => {
@@ -99,12 +100,13 @@ export default {
       });
       professorsService
         .add(this.newProfessor)
-        .then(r => {
+        .then(() => {
           this.$router.push("/all-professors");
-          console.log(r);
         })
         .catch(e => {
-          this.errorsList = e.response.data.errors;
+          console.log(e.response)
+          this.errorsList.push(e.response.data);
+          console.log(this.errorsList)
         });
     },
     addNewImageInput() {
@@ -145,11 +147,15 @@ export default {
     diariesService
       .getAll()
       .then(response => {
-        this.diaries = response.data.filter(diary => !diary.professor_id);
+        if (response.data) {
+          this.diaries = response.data.filter(diary => !diary.professor_id);
+        }
       })
       .catch(error => {
         console.log(error)
-        this.errorsList = error.response.data.errors;
+        if (error.response) {
+          this.errorsList = error.response.data.errors;
+        }
       });
   }
 };

@@ -6,8 +6,9 @@ export default class DiariesService {
         axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem('loginToken')}`
     }
 
-    getAll() {
-        return axios.get('diaries')
+    getAll(page) {
+        console.log(page)
+        return axios.get(`diaries?page=${page}`)
     }
     get(id) {
         console.log(id);
@@ -30,8 +31,11 @@ export default class DiariesService {
         return axios.delete(`diaries/${id}`)
     }
 
+    searchDiary(term, page) {
+        return axios.post(`search?search_term=${term}&page=${page}`);
+    }
+
     myDiary(id) {
-        console.log(`diaries/my-diary/${id}`);
         return axios.get(`diaries/my-diary/${id}`)
     }
 }
